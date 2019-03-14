@@ -1,20 +1,17 @@
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Main {
 	
 	
-	public static void main(String[] args) {
-		
-		String[] words = new String[5];
-		words[0] = "Stapler";
-		words[1] = "Container";
-		words[2] = "Music";
-		words[3] = "Trick";
-		words[4] = "Trading";
+	public static void main(String[] args) throws FileNotFoundException {
+			
+		Scanner userGuess = new Scanner(System.in);
 		
 		printTitleScreen();
 		System.out.println("");
-		String word = generateRandomWord(words);
+		String word = getRandomWordFromFile("/Users/trishulsathiyamoorthy/Desktop/words.txt");
 		char[] wordCharArray = word.toCharArray();
 		
 		System.out.println("It's time to guess the word!");
@@ -25,7 +22,6 @@ public class Main {
 		int failedAttempts = 0;
 		int totalAttempts = 0;
 		
-		Scanner userGuess = new Scanner(System.in);
 		
 		do {
 			
@@ -65,8 +61,8 @@ public class Main {
 		
 		if (word.equals(gameWord.toString())) {
 			System.out.println("Congratulations, you correctly guessed the word!");
+			System.out.println("The word is " + word);
 			System.out.println("You guessed the word in " + totalAttempts + " attempts");
-			System.out.println("Thank you for playing. Play again!");
 			userGuess.close();
 		}
 		
@@ -76,10 +72,6 @@ public class Main {
 		System.out.println("-------------------");
 		System.out.println("Welcome to Hangman!");
 		System.out.println("-------------------");
-	}
-	
-	private static String generateRandomWord(String[] words) {
-		return words[(int) (Math.random() * words.length)];
 	}
 	
 	private static String printBlankSpaces(String word) {
@@ -120,5 +112,22 @@ public class Main {
 		} 
 		return false;
 	}
+	
+	private static String getRandomWordFromFile(String fileName) throws FileNotFoundException {
+		
+		File file = new File(fileName);
+		Scanner fileScanner = new Scanner(file);
+		String fileContents = "";
+		
+		while(fileScanner.hasNextLine()) {
+			fileContents = fileContents.concat(fileScanner.nextLine() + "\n");
+		}
+		
+		fileScanner.close();
+		String[] fileContentArray = fileContents.split("\n");
+		return fileContentArray[(int) (Math.random() * fileContentArray.length)];
+		
+	}
+		
 	
 }
